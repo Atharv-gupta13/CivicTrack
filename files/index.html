@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b4f71">
+  <title>CivicTrack — Civic Reporting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+
+  <div class="access-bar">
+    <div class="access-inner">
+      <span data-i18n="publicService">Public service reporting</span>
+      <div class="access-actions">
+        <button type="button" id="textSmaller" class="utility-btn" aria-label="Decrease text size">A−</button>
+        <button type="button" id="textLarger" class="utility-btn" aria-label="Increase text size">A+</button>
+        <button type="button" id="highContrast" class="utility-btn">High contrast</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">CT</div>
+        <div>
+          <div class="brand-name">CivicTrack</div>
+          <div class="brand-subtitle">Civic issue reporting &amp; verification</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <label class="language-control" for="languageSelect">
+          <span data-i18n="language">Language</span>
+          <select id="languageSelect" aria-label="Select language">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="as">অসমীয়া</option>
+            <option value="bn">বাংলা</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="ml">മലയാളം</option>
+            <option value="mr">मराठी</option>
+            <option value="or">ଓଡ଼ିଆ</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="ur">اردو</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <nav class="primary-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <button class="nav-tab active" type="button" data-view="reportView" data-i18n="reportIssue">Report an issue</button>
+      <button class="nav-tab" type="button" data-view="complaintsView" data-i18n="myComplaints">My complaints</button>
+      <button class="nav-tab" type="button" data-view="communityView" data-i18n="communityReports">Community reports</button>
+    </div>
+  </nav>
+
+  <main id="mainContent" class="main-shell">
+    <!-- CITIZEN REPORT -->
+    <section id="reportView" class="view-panel active-view" aria-labelledby="reportTitle">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow" data-i18n="citizenService">CITIZEN SERVICE</p>
+          <h1 id="reportTitle" data-i18n="reportTitle">Report a civic issue</h1>
+          <p class="lead" data-i18n="reportLead">Photograph the problem, add its location, and send the report in three simple steps.</p>
+        </div>
+        <div class="service-note">
+          <strong data-i18n="lowConnectivity">Designed for low connectivity</strong>
+          <span>Your captured evidence is kept on this device until you save or clear it.</span>
+        </div>
+      </div>
+
+      <ol class="action-steps" aria-label="Report steps">
+        <li class="action-step active"><span>1</span><div><strong data-i18n="snapUpload">Snap / upload</strong><small data-i18n="photoLocation">Photo + location</small></div></li>
+        <li class="step-divider" aria-hidden="true"></li>
+        <li class="action-step"><span>2</span><div><strong data-i18n="categorize">Categorize</strong><small data-i18n="typeSeverityNote">Type + severity + note</small></div></li>
+        <li class="step-divider" aria-hidden="true"></li>
+        <li class="action-step"><span>3</span><div><strong data-i18n="submit">Submit</strong><small data-i18n="getTrackingId">Get a tracking ID</small></div></li>
+      </ol>
+
+      <!-- Preserve the working evidence flow and its existing IDs. -->
+      <section class="service-card" aria-labelledby="locationHeading">
+        <div class="card-heading">
+          <div class="number-badge">01</div>
+          <div><p class="eyebrow" data-i18n="location">LOCATION</p><h2 id="locationHeading" data-i18n="confirmLocation">Confirm where the issue is</h2></div>
+          <span id="locationStateMark" class="state-badge" data-i18n="notVerified">Not verified</span>
+        </div>
+        <p class="helper" data-i18n="locationHelper">Location is attached to your evidence so the responsible local authority can identify the site.</p>
+
+        <label class="consent-row">
+          <input type="checkbox" id="consent">
+          <span data-i18n="consentText">I agree to attach my current location to this report.</span>
+        </label>
+
+        <div class="action-row">
+          <button id="locationBtn" class="primary-btn" type="button" disabled data-i18n="verifyLocation">Verify my location</button>
+          <p id="locationStatus" class="inline-status"><span class="status-dot"></span> Location not verified</p>
+        </div>
+        <div id="addressPreview" class="address-preview" aria-live="polite"></div>
+      </section>
+
+      <section class="service-card" aria-labelledby="captureHeading">
+        <div class="card-heading">
+          <div class="number-badge">02</div>
+          <div><p class="eyebrow" data-i18n="photoEvidence">PHOTO EVIDENCE</p><h2 id="captureHeading" data-i18n="showProblem">Show the problem clearly</h2></div>
+        </div>
+        <p id="captureMessage" class="helper">Verify your location before opening the camera.</p>
+
+        <div class="camera-stage">
+          <div class="camera-empty"><span class="camera-icon" aria-hidden="true">⌾</span><strong data-i18n="cameraPreview">Camera preview</strong><span data-i18n="cameraInstruction">Use the camera to capture the issue</span></div>
+          <video id="camera" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="action-row camera-actions">
+          <button id="cameraBtn" class="secondary-btn" type="button" disabled data-i18n="openCamera">Open camera</button>
+          <button id="captureBtn" class="shutter-btn" type="button" disabled data-i18n="takePhoto">Take photo</button>
+        </div>
+
+        <div class="preview-block">
+          <div class="preview-label"><span data-i18n="capturedPhoto">Captured photo</span><span data-i18n="reviewBeforeSaving">Review before saving</span></div>
+          <img id="preview" alt="Captured civic issue photo preview">
+        </div>
+
+        <div class="detail-grid">
+          <div class="field-group">
+            <label for="issueCategory" data-i18n="issueCategory">Issue category</label>
+            <select id="issueCategory">
+              <option value="" data-i18n="selectCategory">Select a category</option>
+              <option value="Pothole / damaged road">Pothole / damaged road</option>
+              <option value="Garbage / sanitation">Garbage / sanitation</option>
+              <option value="Streetlight">Streetlight</option>
+              <option value="Water leakage">Water leakage</option>
+              <option value="Drainage / flooding">Drainage / flooding</option>
+              <option value="Electricity">Electricity</option>
+              <option value="Public property damage">Public property damage</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="issueSeverity" data-i18n="severity">Severity</label>
+            <select id="issueSeverity">
+              <option value="Normal">Normal</option>
+              <option value="Urgent">Urgent</option>
+              <option value="Safety risk">Safety risk</option>
+            </select>
+          </div>
+          <div class="field-group full-width">
+            <label for="issueDetails" data-i18n="describeIssue">Describe the issue</label>
+            <div class="voice-field">
+              <textarea id="issueDetails" rows="4" placeholder="Tell the department what is wrong and where it affects people."></textarea>
+              <button type="button" id="voiceBtn" class="voice-btn" aria-label="Start voice input">Speak</button>
+            </div>
+            <small id="voiceStatus" class="field-hint" data-i18n="voiceAvailable">Voice input is available when supported by your browser.</small>
+          </div>
+        </div>
+
+        <label class="consent-row share-row">
+          <input type="checkbox" id="shareToggle" checked>
+          <span>Share this report (photo, place name and description) so others can see it in Community reports.</span>
+        </label>
+
+        <div class="save-row">
+          <button id="saveBtn" class="primary-btn" type="button" disabled data-i18n="saveContinue">Save evidence &amp; continue</button>
+          <p id="status" class="form-status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="ticket-panel" id="ticketPanel" hidden aria-live="polite">
+        <div class="ticket-icon" aria-hidden="true">✓</div>
+        <div><p class="eyebrow" data-i18n="reportSavedLocal">REPORT SAVED ON THIS DEVICE</p><h2 data-i18n="trackingReference">Your tracking reference</h2><strong id="ticketId">—</strong><p data-i18n="trackingHelper">Use this reference when following up. Official departmental status requires connection to the CivicTrack service.</p></div>
+      </section>
+
+      <section class="service-card local-record-card" aria-labelledby="recordsHeading">
+        <div class="card-heading">
+          <div class="number-badge">03</div>
+          <div><p class="eyebrow" data-i18n="savedEvidence">SAVED EVIDENCE</p><h2 id="recordsHeading" data-i18n="localRecords">Your local records</h2></div>
+          <button id="clearBtn" class="text-danger-btn" type="button" data-i18n="clearRecords">Clear records</button>
+        </div>
+        <p class="helper" data-i18n="localRecordsHelper">These records are stored in this browser. They are not automatically sent to a municipal department.</p>
+        <div id="records"></div>
+      </section>
+    </section>
+
+    <!-- CITIZEN TRACKER -->
+    <section id="complaintsView" class="view-panel" aria-labelledby="complaintsTitle">
+      <div class="page-heading compact-heading">
+        <div><p class="eyebrow" data-i18n="citizenService">CITIZEN SERVICE</p><h1 id="complaintsTitle" data-i18n="myComplaints">My complaints</h1><p class="lead" data-i18n="complaintsLead">Track reports saved on this device and review their current local status.</p></div>
+      </div>
+      <div id="complaintList" class="complaint-list"></div>
+    </section>
+
+    <!-- COMMUNITY (shared reports from server) -->
+    <section id="communityView" class="view-panel" aria-labelledby="communityTitle">
+      <div class="page-heading compact-heading">
+        <div><p class="eyebrow" data-i18n="citizenService">CITIZEN SERVICE</p><h1 id="communityTitle" data-i18n="communityReports">Community reports</h1><p class="lead">Issues reported and shared by citizens. Photos come with the place name and capture time.</p></div>
+        <button id="refreshCommunity" class="secondary-btn" type="button">Refresh</button>
+      </div>
+      <p id="communityStatus" class="helper" aria-live="polite"></p>
+      <div id="communityList" class="community-grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div>CivicTrack</div><div>Accessible civic reporting interface</div><div>Your evidence stays on this device until you choose how to share it.</div>
+  </footer>
+
+  <!-- Existing working backend/evidence logic. DO NOT ALTER. -->
+  <div id="locationPopup" class="popup hidden"><div class="popup-box"><div class="loader"></div><h2>Finding your location</h2><p>Allow location access in your browser to continue.</p></div></div>
+  <div id="evidencePopup" class="popup hidden"><div class="popup-box evidence"><button id="closeEvidence" class="close" aria-label="Close evidence">×</button><p class="eyebrow">EVIDENCE RECORD</p><h2>Evidence details</h2><img id="evidenceImage" alt="Evidence photo"><div id="evidenceInfo"></div></div></div>
+
+  <script>window.CIVICTRACK_API = ""; /* "" = same server that serves this page. Set to your deployed server URL if the frontend is hosted elsewhere. */</script>
+  <script src="script.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
